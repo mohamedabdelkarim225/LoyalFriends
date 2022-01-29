@@ -23,6 +23,7 @@ namespace Inno.Core.Data
         public Nullable<int> ServiceProviderID { get; set; }
         public Nullable<int> ServiceQuotaID { get; set; }
         public Nullable<int> CustomerStatusID { get; set; }
+        public Nullable<int> RequestTypeID { get; set; }
         public Nullable<int> RouterTypeID { get; set; }
         public Nullable<int> RouterDeliveryMethodID { get; set; }
         public Nullable<int> CustomerTypeID { get; set; }

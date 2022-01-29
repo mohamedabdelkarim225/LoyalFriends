@@ -44,6 +44,7 @@ namespace Inno.Data.Mapping
             this.Property(t => t.ServiceProviderID).HasColumnName("ServiceProviderID");
             this.Property(t => t.ServiceQuotaID).HasColumnName("ServiceQuotaID");
             this.Property(t => t.CustomerStatusID).HasColumnName("CustomerStatusID");
+            this.Property(t => t.RequestTypeID).HasColumnName("RequestTypeID");
             this.Property(t => t.RouterTypeID).HasColumnName("RouterTypeID");
             this.Property(t => t.RouterDeliveryMethodID).HasColumnName("RouterDeliveryMethodID");
             this.Property(t => t.CustomerTypeID).HasColumnName("CustomerTypeID");

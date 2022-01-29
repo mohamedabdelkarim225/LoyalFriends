@@ -15,7 +15,7 @@ namespace Inno.Data.Mapping
             // Table & Column Mappings
             this.ToTable("Corporate");
             this.Property(t => t.ID).HasColumnName("ID");
-            this.Property(t => t.RequestNumber).HasColumnName("RequestNumber");
+            this.Property(t => t.AccountNumber).HasColumnName("AccountNumber");
             this.Property(t => t.Name).HasColumnName("Name");
             this.Property(t => t.Mobile).HasColumnName("Mobile");
             this.Property(t => t.CompanyName).HasColumnName("CompanyName");
@@ -24,6 +24,7 @@ namespace Inno.Data.Mapping
             this.Property(t => t.LinesNumber).HasColumnName("LinesNumber");
             this.Property(t => t.AccountTypeID).HasColumnName("AccountTypeID");
             this.Property(t => t.CustomerStatusID).HasColumnName("CustomerStatusID");
+            this.Property(t => t.RequestTypeID).HasColumnName("RequestTypeID");
             this.Property(t => t.Comment).HasColumnName("Comment");
             this.Property(t => t.CreatedBy).HasColumnName("CreatedBy");
             this.Property(t => t.CreatedOn).HasColumnName("CreatedOn");

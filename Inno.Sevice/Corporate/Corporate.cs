@@ -26,17 +26,10 @@ namespace Inno.Service.Corporate
             return Corporate;
         }
 
-        public bool AddCorporate(Core.Data.Corporate model)
+        public Core.Data.Corporate AddCorporate(Core.Data.Corporate model)
         {
-            try
-            {
-                CorporateRepository.Insert(model);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            CorporateRepository.Insert(model);
+            return model;
         }
         public Core.Data.Corporate EditCorporate(Core.Data.Corporate model)
         {
@@ -81,16 +74,16 @@ namespace Inno.Service.Corporate
             var Corporates = CorporateRepository.Table.AsQueryable();
             return Corporates;
         }
-        
+
         public IQueryable<Core.Data.Corporate> SearchFor(Expression<Func<Core.Data.Corporate, bool>> predicate)
         {
             return CorporateRepository.SearchFor(predicate);
         }
 
 
-        public List <Core.Data.Corporate> GetCorporateBySQLStatment(string query, object[] parameters)
+        public List<Core.Data.Corporate> GetCorporateBySQLStatment(string query, object[] parameters)
         {
-           return CorporateRepository.ExecuteSQLQuery(query, parameters);
+            return CorporateRepository.ExecuteSQLQuery(query, parameters);
         }
 
         public int GetCorporateCount(Expression<Func<Core.Data.Corporate, bool>> predicate)

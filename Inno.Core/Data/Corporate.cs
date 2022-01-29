@@ -6,7 +6,7 @@ namespace Inno.Core.Data
     public partial class Corporate:BaseEntity
     {
         public int ID { get; set; }
-        public string RequestNumber { get; set; }
+        public string AccountNumber { get; set; }
         public string Name { get; set; }
         public string Mobile { get; set; }
         public string CompanyName { get; set; }
@@ -15,6 +15,7 @@ namespace Inno.Core.Data
         public Nullable<int> LinesNumber { get; set; }
         public Nullable<int> AccountTypeID { get; set; }
         public Nullable<int> CustomerStatusID { get; set; }
+        public Nullable<int> RequestTypeID { get; set; }
         public string Comment { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }

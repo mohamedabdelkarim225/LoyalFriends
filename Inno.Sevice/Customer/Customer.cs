@@ -26,17 +26,10 @@ namespace Inno.Service.Customer
             return Customer;
         }
 
-        public bool AddCustomer(Core.Data.Customer model)
+        public Core.Data.Customer AddCustomer(Core.Data.Customer model)
         {
-            try
-            {
-                CustomerRepository.Insert(model);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            CustomerRepository.Insert(model);
+            return model;
         }
         public Core.Data.Customer EditCustomer(Core.Data.Customer model)
         {

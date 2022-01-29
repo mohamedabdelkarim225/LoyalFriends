@@ -23,6 +23,7 @@ namespace LoyalFriends.Models
         public List<LookupObj> Offer { get; set; }
         public List<LookupObj> ServiceProvider { get; set; }
         public List<LookupObj> CustomerStatus { get; set; }
+        public List<LookupObj> RequestType { get; set; }
         public List<LookupObj> RouterType { get; set; }
         public List<LookupObj> RouterDeliveryMethod { get; set; }
         public List<LookupObj> CustomerType { get; set; }

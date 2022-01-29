@@ -30,6 +30,8 @@ namespace LoyalFriends.Models
         public string ServiceQuota { get; set; }
         public Nullable<int> CustomerStatusID { get; set; }
         public string CustomerStatus { get; set; }
+        public Nullable<int> RequestTypeID { get; set; }
+        public string RequestType { get; set; }
         public Nullable<int> RouterTypeID { get; set; }
         public string RouterType { get; set; }
         public Nullable<int> RouterDeliveryMethodID { get; set; }

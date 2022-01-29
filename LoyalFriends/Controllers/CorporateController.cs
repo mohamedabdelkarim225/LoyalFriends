@@ -140,15 +140,16 @@ namespace LoyalFriends.Controllers
             Corporate Cor = new Corporate
             {
                 Name = CorporateVM.Name,
-               AccountTypeID=CorporateVM.AccountTypeID,
-               Comment=CorporateVM.Comment,
-               CompanyAddress=CorporateVM.CompanyAddress,
-               CompanyName=CorporateVM.CompanyName,
-               CompanyType=CorporateVM.CompanyType,
-               CustomerStatusID=CorporateVM.CustomerStatusID,
-               LinesNumber=CorporateVM.LinesNumber,
-               Mobile=CorporateVM.Mobile,
-               RequestNumber=CorporateVM.RequestNumber
+                AccountTypeID = CorporateVM.AccountTypeID,
+                Comment = CorporateVM.Comment,
+                CompanyAddress = CorporateVM.CompanyAddress,
+                CompanyName = CorporateVM.CompanyName,
+                CompanyType = CorporateVM.CompanyType,
+                CustomerStatusID = CorporateVM.CustomerStatusID,
+                RequestTypeID = CorporateVM.RequestTypeID,
+                LinesNumber = CorporateVM.LinesNumber,
+                Mobile = CorporateVM.Mobile,
+                AccountNumber = CorporateVM.AccountNumber
 
             };
             return Cor;
@@ -179,7 +180,7 @@ namespace LoyalFriends.Controllers
 
         [HttpGet]
         [ResponseType(typeof(CorporateListResponseObj))]
-        public HttpResponseMessage CorporateList(HttpRequestMessage request, int UserID, string UserRole, int AccountType, int Page, int PageLimit)
+        public HttpResponseMessage CorporateList(HttpRequestMessage request, int UserID, string UserRole, int Page, int PageLimit)
         {
             var ResponseMessage = new HttpResponseMessage();
             var resposeObj = new CorporateListResponseObj();
@@ -190,8 +191,8 @@ namespace LoyalFriends.Controllers
                 var Corporates = new List<Corporate>();
                 if (UserRole == Roles.Employee.ToString())
                 {
-                    Count = CorporateService.GetCorporateCount(a => a.CreatedBy == UserID && a.AccountTypeID == AccountType);
-                    Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c where c.CreatedBy=" + UserID + " and c.AccountTypeID=" + AccountType + "  order by c.ID desc OFFSET " + (Page - 1) * PageLimit + " ROWS FETCH NEXT " + PageLimit + " ROWS ONLY", new object[] { });
+                    Count = CorporateService.GetCorporateCount(a => a.CreatedBy == UserID);
+                    Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c where c.CreatedBy=" + UserID + "  order by c.ID desc OFFSET " + (Page - 1) * PageLimit + " ROWS FETCH NEXT " + PageLimit + " ROWS ONLY", new object[] { });
 
                     if (Corporates.Count > 0)
                     {
@@ -206,8 +207,8 @@ namespace LoyalFriends.Controllers
                 }
                 else
                 {
-                    Count = CorporateService.GetCorporateCount(a => a.AccountTypeID == AccountType);
-                    Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c where c.AccountTypeID=" + AccountType + "  order by c.ID desc OFFSET " + (Page - 1) * PageLimit + " ROWS FETCH NEXT " + PageLimit + " ROWS ONLY", new object[] { });
+                    Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c order by c.ID desc OFFSET " + (Page - 1) * PageLimit + " ROWS FETCH NEXT " + PageLimit + " ROWS ONLY", new object[] { });
+                    Count = Corporates.Count;
                     if (Corporates.Count > 0)
                     {
                         Corporates.ForEach(c =>
@@ -236,7 +237,7 @@ namespace LoyalFriends.Controllers
 
         [HttpGet]
         [ResponseType(typeof(CorporateListResponseObj))]
-        public HttpResponseMessage CorporateList(HttpRequestMessage request, int UserID, string UserRole, int AccountType, int Page, int PageLimit, string SearchText)
+        public HttpResponseMessage CorporateList(HttpRequestMessage request, int UserID, string UserRole, int Page, int PageLimit, string SearchText)
         {
             var ResponseMessage = new HttpResponseMessage();
             var resposeObj = new CorporateListResponseObj();
@@ -249,12 +250,12 @@ namespace LoyalFriends.Controllers
                 {
                     if (string.IsNullOrEmpty(SearchText))
                     {
-                        Count = CorporateService.GetCorporateCount(a => a.CreatedBy == UserID && a.AccountTypeID == AccountType);
-                        Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c where c.CreatedBy=" + UserID + " and c.AccountTypeID=" + AccountType + "  order by c.ID desc OFFSET " + (Page - 1) * PageLimit + " ROWS FETCH NEXT " + PageLimit + " ROWS ONLY", new object[] { });
+                        Count = CorporateService.GetCorporateCount(a => a.CreatedBy == UserID);
+                        Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c where c.CreatedBy=" + UserID + "  order by c.ID desc OFFSET " + (Page - 1) * PageLimit + " ROWS FETCH NEXT " + PageLimit + " ROWS ONLY", new object[] { });
                     }
                     else
                     {
-                        Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c where c.CreatedBy=" + UserID + " and c.AccountTypeID=" + AccountType + "and c.Mobile=" + SearchText, new object[] { });
+                        Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c where c.CreatedBy=" + UserID + "and c.Mobile=" + SearchText, new object[] { });
                         Count = Corporates.Count;
                     }
                     if (Corporates.Count > 0)
@@ -272,12 +273,12 @@ namespace LoyalFriends.Controllers
                 {
                     if (string.IsNullOrEmpty(SearchText))
                     {
-                        Count = CorporateService.GetCorporateCount(a => a.AccountTypeID == AccountType);
-                        Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c where c.AccountTypeID=" + AccountType + "  order by c.ID desc OFFSET " + (Page - 1) * PageLimit + " ROWS FETCH NEXT " + PageLimit + " ROWS ONLY", new object[] { });
+                        Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c order by c.ID desc OFFSET " + (Page - 1) * PageLimit + " ROWS FETCH NEXT " + PageLimit + " ROWS ONLY", new object[] { });
+                        Count = Corporates.Count;
                     }
                     else
                     {
-                        Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c where  c.AccountTypeID=" + AccountType + "and c.Mobile=" + SearchText, new object[] { });
+                        Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c where c.Mobile=" + SearchText, new object[] { });
                         Count = Corporates.Count;
                     }
 
@@ -306,6 +307,79 @@ namespace LoyalFriends.Controllers
             }
             return ResponseMessage;
         }
+        [HttpGet]
+        [ResponseType(typeof(CorporateListResponseObj))]
+        public HttpResponseMessage CorporateList(HttpRequestMessage request, int UserID, string UserRole, int Page, int PageLimit, int CustomerStatusID)
+        {
+            var ResponseMessage = new HttpResponseMessage();
+            var resposeObj = new CorporateListResponseObj();
+            List<CorporateViewModel> Corporateslist = new List<CorporateViewModel>();
+            try
+            {
+                int Count = 0;
+                var Corporates = new List<Corporate>();
+                if (UserRole == Roles.Employee.ToString())
+                {
+                    if (CustomerStatusID==0)
+                    {
+                        Count = CorporateService.GetCorporateCount(a => a.CreatedBy == UserID);
+                        Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c where c.CreatedBy=" + UserID + "  order by c.ID desc OFFSET " + (Page - 1) * PageLimit + " ROWS FETCH NEXT " + PageLimit + " ROWS ONLY", new object[] { });
+                    }
+                    else
+                    {
+                        Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c where c.CreatedBy=" + UserID + "and c.CustomerStatusID=" + CustomerStatusID, new object[] { });
+                        Count = Corporates.Count;
+                    }
+                    if (Corporates.Count > 0)
+                    {
+                        Corporates.ForEach(c =>
+                        {
+                            var CVM = CorporateMapping(c);
+                            Corporateslist.Add(CVM);
+
+                        });
+                    }
+
+                }
+                else
+                {
+                    if (CustomerStatusID == 0)
+                    {
+                        Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c order by c.ID desc OFFSET " + (Page - 1) * PageLimit + " ROWS FETCH NEXT " + PageLimit + " ROWS ONLY", new object[] { });
+                        Count = Corporates.Count;
+                    }
+                    else
+                    {
+                        Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c where and c.CustomerStatusID=" + CustomerStatusID, new object[] { });
+                        Count = Corporates.Count;
+                    }
+
+                    if (Corporates.Count > 0)
+                    {
+                        Corporates.ForEach(c =>
+                        {
+                            var CVM = CorporateMapping(c);
+                            Corporateslist.Add(CVM);
+
+                        });
+                    }
+                }
+                resposeObj.Corporates = Corporateslist;
+                resposeObj.TotalCount = Count;
+                resposeObj.status = "successfully";
+                ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
+            }
+
+            catch (Exception ex)
+            {
+                resposeObj.status = "Failure";
+                resposeObj.error = ex.Message;
+                ResponseMessage = request.CreateResponse(HttpStatusCode.BadRequest, resposeObj);
+
+            }
+            return ResponseMessage;
+        }
+
         public CorporateViewModel CorporateMapping(Corporate C)
         {
             CorporateViewModel CVM = new CorporateViewModel()
@@ -316,19 +390,21 @@ namespace LoyalFriends.Controllers
                 CreatedOn = C.CreatedOn.ToStrDate(),
                 CustomerStatus = LookupService.GetLookupName(C.CustomerStatusID),
                 CustomerStatusID = C.CustomerStatusID,
+                RequestType = LookupService.GetLookupName(C.RequestTypeID),
+                RequestTypeID = C.RequestTypeID,
                 Mobile = C.Mobile,
                 ModifiedBy = C.ModifiedBy,
                 ModifiedOn = C.ModifiedOn.ToStrDate(),
                 ModifiedByName = UserService.GetUserName(C.ModifiedBy),
                 ID = C.ID,
                 Name = C.Name,
-                RequestNumber = C.RequestNumber,
-                AccountType= LookupService.GetLookupName(C.AccountTypeID),
-                AccountTypeID=C.AccountTypeID,
-                CompanyAddress=C.CompanyAddress,
-                CompanyName=C.CompanyName,
-                CompanyType=C.CompanyType,
-                LinesNumber=C.LinesNumber
+                AccountNumber = C.AccountNumber,
+                AccountType = LookupService.GetLookupName(C.AccountTypeID),
+                AccountTypeID = C.AccountTypeID,
+                CompanyAddress = C.CompanyAddress,
+                CompanyName = C.CompanyName,
+                CompanyType = C.CompanyType,
+                LinesNumber = C.LinesNumber
 
             };
             return CVM;

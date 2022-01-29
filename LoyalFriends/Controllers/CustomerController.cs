@@ -148,6 +148,7 @@ namespace LoyalFriends.Controllers
                 Comment = customerVM.Comment,
                 ContactDate = Convert.ToDateTime(customerVM.ContactDate),
                 CustomerStatusID = customerVM.CustomerStatusID,
+                RequestTypeID=customerVM.RequestTypeID,
                 CustomerTypeID = customerVM.CustomerTypeID,
                 District = customerVM.District,
                 FixedLine = customerVM.FixedLine,
@@ -318,6 +319,79 @@ namespace LoyalFriends.Controllers
             }
             return ResponseMessage;
         }
+
+        [HttpGet]
+        [ResponseType(typeof(CustomerListResponseObj))]
+        public HttpResponseMessage CustomerList(HttpRequestMessage request, int UserID, string UserRole, int CustomerType, int Page, int PageLimit, int CustomerStatusID)
+        {
+            var ResponseMessage = new HttpResponseMessage();
+            var resposeObj = new CustomerListResponseObj();
+            List<CustomerViewModel> Customerslist = new List<CustomerViewModel>();
+            try
+            {
+                int Count = 0;
+                var Customers = new List<Customer>();
+                if (UserRole == Roles.Employee.ToString())
+                {
+                    if (CustomerStatusID==0)
+                    {
+                        Count = CustomerService.GetCustomerCount(a => a.CreatedBy == UserID && a.CustomerTypeID == CustomerType);
+                        Customers = CustomerService.GetCustomerBySQLStatment("select * from [dbo].[Customer]as c where c.CreatedBy=" + UserID + " and c.CustomerTypeID=" + CustomerType + "  order by c.ID desc OFFSET " + (Page - 1) * PageLimit + " ROWS FETCH NEXT " + PageLimit + " ROWS ONLY", new object[] { });
+                    }
+                    else
+                    {
+                        Customers = CustomerService.GetCustomerBySQLStatment("select * from [dbo].[Customer]as c where c.CreatedBy=" + UserID + " and c.CustomerTypeID=" + CustomerType + "and c.CustomerStatusID=" + CustomerStatusID, new object[] { });
+                        Count = Customers.Count;
+                    }
+                    if (Customers.Count > 0)
+                    {
+                        Customers.ForEach(c =>
+                        {
+                            var CVM = CustomerMapping(c);
+                            Customerslist.Add(CVM);
+
+                        });
+                    }
+
+                }
+                else
+                {
+                    if (CustomerStatusID==0)
+                    {
+                        Count = CustomerService.GetCustomerCount(a => a.CustomerTypeID == CustomerType);
+                        Customers = CustomerService.GetCustomerBySQLStatment("select * from [dbo].[Customer]as c where c.CustomerTypeID=" + CustomerType + "  order by c.ID desc OFFSET " + (Page - 1) * PageLimit + " ROWS FETCH NEXT " + PageLimit + " ROWS ONLY", new object[] { });
+                    }
+                    else
+                    {
+                        Customers = CustomerService.GetCustomerBySQLStatment("select * from [dbo].[Customer]as c where  c.CustomerTypeID=" + CustomerType + "and c.CustomerStatusID=" + CustomerStatusID, new object[] { });
+                        Count = Customers.Count;
+                    }
+
+                    if (Customers.Count > 0)
+                    {
+                        Customers.ForEach(c =>
+                        {
+                            var CVM = CustomerMapping(c);
+                            Customerslist.Add(CVM);
+
+                        });
+                    }
+                }
+                resposeObj.Customers = Customerslist;
+                resposeObj.TotalCount = Count;
+                resposeObj.status = "successfully";
+                ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
+            }
+
+            catch (Exception ex)
+            {
+                resposeObj.status = "Failure";
+                resposeObj.error = ex.Message;
+                ResponseMessage = request.CreateResponse(HttpStatusCode.BadRequest, resposeObj);
+
+            }
+            return ResponseMessage;
+        }
         public CustomerViewModel CustomerMapping(Customer C)
         {
             CustomerViewModel CVM = new CustomerViewModel()
@@ -332,6 +406,8 @@ namespace LoyalFriends.Controllers
                 CreatedOn = C.CreatedOn.ToStrDate(),
                 CustomerStatus = LookupService.GetLookupName(C.CustomerStatusID),
                 CustomerStatusID = C.CustomerStatusID,
+                RequestType = LookupService.GetLookupName(C.RequestTypeID),
+                RequestTypeID = C.RequestTypeID,
                 CustomerType = LookupService.GetLookupName(C.CustomerTypeID),
                 CustomerTypeID = C.CustomerTypeID,
                 District = C.District,

@@ -15,7 +15,8 @@ namespace Inno.Utility
         RouterDeliveryMethod,
         CustomerType,
         UserRole,
-        AccountType
+        AccountType,
+        RequestType
     }
     public enum Roles
     {
