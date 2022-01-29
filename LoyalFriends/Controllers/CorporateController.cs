@@ -255,7 +255,7 @@ namespace LoyalFriends.Controllers
                     }
                     else
                     {
-                        Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c where c.CreatedBy=" + UserID + "and c.Mobile=" + SearchText, new object[] { });
+                        Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c where c.CreatedBy=" + UserID + "and c.Mobile=" + SearchText+ "or c.AccountNumber=" + SearchText, new object[] { });
                         Count = Corporates.Count;
                     }
                     if (Corporates.Count > 0)
@@ -278,7 +278,7 @@ namespace LoyalFriends.Controllers
                     }
                     else
                     {
-                        Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c where c.Mobile=" + SearchText, new object[] { });
+                        Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c where c.Mobile=" + SearchText+ "or c.AccountNumber=" + SearchText, new object[] { });
                         Count = Corporates.Count;
                     }
 

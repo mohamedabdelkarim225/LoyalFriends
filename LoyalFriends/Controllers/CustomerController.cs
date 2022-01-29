@@ -59,7 +59,7 @@ namespace LoyalFriends.Controllers
                 ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 resposeObj.status = "Failure";
                 resposeObj.error = ex.Message;
@@ -70,7 +70,7 @@ namespace LoyalFriends.Controllers
 
         [HttpPut]
         [ResponseType(typeof(AddCustomerResponseObj))]
-        public HttpResponseMessage EditCustomer(HttpRequestMessage request, CustomerViewModel customerVM, int UserID,int CustomerID)
+        public HttpResponseMessage EditCustomer(HttpRequestMessage request, CustomerViewModel customerVM, int UserID, int CustomerID)
         {
             var ResponseMessage = new HttpResponseMessage();
             var resposeObj = new AddCustomerResponseObj();
@@ -148,7 +148,7 @@ namespace LoyalFriends.Controllers
                 Comment = customerVM.Comment,
                 ContactDate = Convert.ToDateTime(customerVM.ContactDate),
                 CustomerStatusID = customerVM.CustomerStatusID,
-                RequestTypeID=customerVM.RequestTypeID,
+                RequestTypeID = customerVM.RequestTypeID,
                 CustomerTypeID = customerVM.CustomerTypeID,
                 District = customerVM.District,
                 FixedLine = customerVM.FixedLine,
@@ -162,7 +162,7 @@ namespace LoyalFriends.Controllers
                 ServiceProviderID = customerVM.ServiceProviderID,
                 ServiceQuotaID = customerVM.ServiceQuotaID,
                 SpecialMark = customerVM.SpecialMark,
-                RequestNumber=customerVM.RequestNumber
+                RequestNumber = customerVM.RequestNumber
             };
             return Cust;
         }
@@ -267,7 +267,7 @@ namespace LoyalFriends.Controllers
                     }
                     else
                     {
-                        Customers = CustomerService.GetCustomerBySQLStatment("select * from [dbo].[Customer]as c where c.CreatedBy=" + UserID + " and c.CustomerTypeID=" + CustomerType + "and c.NationalId=" + SearchText, new object[] { });
+                        Customers = CustomerService.GetCustomerBySQLStatment("select * from [dbo].[Customer]as c where c.CreatedBy=" + UserID + " and c.CustomerTypeID=" + CustomerType + " and c.Mobile=" + SearchText + " or c.RequestNumber=" + SearchText, new object[] { });
                         Count = Customers.Count;
                     }
                     if (Customers.Count > 0)
@@ -290,7 +290,7 @@ namespace LoyalFriends.Controllers
                     }
                     else
                     {
-                        Customers = CustomerService.GetCustomerBySQLStatment("select * from [dbo].[Customer]as c where  c.CustomerTypeID=" + CustomerType + "and c.NationalId=" + SearchText, new object[] { });
+                        Customers = CustomerService.GetCustomerBySQLStatment("select * from [dbo].[Customer]as c where  c.CustomerTypeID=" + CustomerType + " and c.Mobile=" + SearchText+ " or c.RequestNumber="+SearchText, new object[] { });
                         Count = Customers.Count;
                     }
 
@@ -333,7 +333,7 @@ namespace LoyalFriends.Controllers
                 var Customers = new List<Customer>();
                 if (UserRole == Roles.Employee.ToString())
                 {
-                    if (CustomerStatusID==0)
+                    if (CustomerStatusID == 0)
                     {
                         Count = CustomerService.GetCustomerCount(a => a.CreatedBy == UserID && a.CustomerTypeID == CustomerType);
                         Customers = CustomerService.GetCustomerBySQLStatment("select * from [dbo].[Customer]as c where c.CreatedBy=" + UserID + " and c.CustomerTypeID=" + CustomerType + "  order by c.ID desc OFFSET " + (Page - 1) * PageLimit + " ROWS FETCH NEXT " + PageLimit + " ROWS ONLY", new object[] { });
@@ -356,7 +356,7 @@ namespace LoyalFriends.Controllers
                 }
                 else
                 {
-                    if (CustomerStatusID==0)
+                    if (CustomerStatusID == 0)
                     {
                         Count = CustomerService.GetCustomerCount(a => a.CustomerTypeID == CustomerType);
                         Customers = CustomerService.GetCustomerBySQLStatment("select * from [dbo].[Customer]as c where c.CustomerTypeID=" + CustomerType + "  order by c.ID desc OFFSET " + (Page - 1) * PageLimit + " ROWS FETCH NEXT " + PageLimit + " ROWS ONLY", new object[] { });
@@ -433,7 +433,7 @@ namespace LoyalFriends.Controllers
                 ServiceQuota = LookupService.GetLookupName(C.ServiceQuotaID),
                 ServiceQuotaID = C.ServiceQuotaID,
                 SpecialMark = C.SpecialMark,
-                RequestNumber=C.RequestNumber
+                RequestNumber = C.RequestNumber
 
             };
             return CVM;
