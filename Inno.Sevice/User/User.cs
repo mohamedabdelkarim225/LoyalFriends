@@ -30,6 +30,12 @@ namespace Inno.Service.User
 
             return (id != null ? UserRepository.Table.Where(c => c.ID == id).FirstOrDefault().Name : "");
         }
+
+        public bool IsFound(string UserName)
+        {
+            var Check = UserRepository.Table.Where(a => a.UserName == UserName).FirstOrDefault();
+            return (Check != null ? true : false);
+        }
         public Core.Data.User CheckUser(string UserName, string Password)
         {
             return UserRepository.Table.Where(c => c.UserName == UserName && c.Password == Password && c.IsActive == true).FirstOrDefault();
@@ -61,21 +67,6 @@ namespace Inno.Service.User
             UserRepository.Update(NewUser);
             return NewUser;
         }
-
-        //public bool ChangeUserStatus(int user_id)
-        //{
-        //    var user = UserRepository.Table.Where(c => c.ID == user_id).FirstOrDefault();
-        //    user.IsActive = user.IsActive == true ? false : true;
-        //    try
-        //    {
-        //        UserRepository.Update(user);
-        //        return true;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return false;
-        //    }
-        //}
         public IQueryable<Core.Data.User> GetAllUser()
         {
             var users = UserRepository.Table.OrderByDescending(c => c.ID).AsQueryable();

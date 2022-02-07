@@ -55,6 +55,11 @@ namespace LoyalFriends.Controllers
             var resposeObj = new AddUserResponseObj();
             try
             {
+                if (UserService.IsFound(Uservm.UserName))
+                {
+                    resposeObj.status = "Invalid UserName";
+                    ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
+                }
                 var Usr = UserVMMapping(Uservm);
                 Usr.CreatedBy = UserID;
                 Usr.CreatedOn = DateTime.Now.Date;
@@ -71,6 +76,32 @@ namespace LoyalFriends.Controllers
             }
             return ResponseMessage;
         }
+
+        [HttpPut]
+        [ResponseType(typeof(AddUserResponseObj))]
+        public HttpResponseMessage EditUserStatus(HttpRequestMessage request, int UID, int UserID)
+        {
+            var ResponseMessage = new HttpResponseMessage();
+            var resposeObj = new AddUserResponseObj();
+            try
+            {
+                var U = UserService.GetUserById(UID);
+                U.IsActive = (U.IsActive ? false : true);
+                U.ModifiedBy = UserID;
+                U.ModifiedOn = DateTime.Now;
+                UserService.EditUser(U);
+                resposeObj.status = "successfully";
+                ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
+            }
+            catch (Exception ex)
+            {
+                resposeObj.status = "Failure";
+                resposeObj.error = ex.Message;
+                ResponseMessage = request.CreateResponse(HttpStatusCode.BadRequest, resposeObj);
+            }
+            return ResponseMessage;
+        }
+
 
         [HttpGet]
         [ResponseType(typeof(UserDetailsResponseObj))]
