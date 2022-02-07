@@ -22,29 +22,22 @@ namespace Inno.Service.User
         #region User
         public Core.Data.User GetUserById(int user_id)
         {
-            return  UserRepository.Table.Where(c => c.ID == user_id).FirstOrDefault();
-            
+            return UserRepository.Table.Where(c => c.ID == user_id).FirstOrDefault();
+
         }
         public string GetUserName(int? id)
         {
-            
-            return (id!=null?UserRepository.Table.Where(c => c.ID == id).FirstOrDefault().Name:"");
+
+            return (id != null ? UserRepository.Table.Where(c => c.ID == id).FirstOrDefault().Name : "");
         }
-        public Core.Data.User CheckUser(string UserName,string Password)
+        public Core.Data.User CheckUser(string UserName, string Password)
         {
             return UserRepository.Table.Where(c => c.UserName == UserName && c.Password == Password && c.IsActive == true).FirstOrDefault();
         }
-        public bool AddUser(Core.Data.User model)
+        public Core.Data.User AddUser(Core.Data.User model)
         {
-            try
-            {
-                UserRepository.Insert(model);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            UserRepository.Insert(model);
+            return model;
         }
         public Core.Data.User EditUser(Core.Data.User model)
         {
@@ -93,8 +86,11 @@ namespace Inno.Service.User
             return UserRepository.SearchFor(predicate);
         }
         #endregion
+        public List<Core.Data.User> GetUserBySQLStatment(string query, object[] parameters)
+        {
+            return UserRepository.ExecuteSQLQuery(query, parameters);
+        }
 
-        
     }
 
 }

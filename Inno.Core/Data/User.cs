@@ -13,5 +13,9 @@ namespace Inno.Core.Data
         public string Password { get; set; }
         public Nullable<int> UserRoleID { get; set; }
         public bool IsActive { get; set; }
+        public Nullable<int> CreatedBy { get; set; }
+        public Nullable<System.DateTime> CreatedOn { get; set; }
+        public Nullable<int> ModifiedBy { get; set; }
+        public Nullable<System.DateTime> ModifiedOn { get; set; }
     }
 }

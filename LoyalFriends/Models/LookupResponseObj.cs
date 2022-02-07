@@ -29,5 +29,6 @@ namespace LoyalFriends.Models
         public List<LookupObj> CustomerType { get; set; }
         public List<LookupObj> ServiceQuota { get; set; }
         public List<LookupObj> AccountType { get; set; }
+        public List<LookupObj> UserRole { get; set; }
     }
 }

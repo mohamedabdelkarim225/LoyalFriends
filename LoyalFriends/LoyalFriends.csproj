@@ -118,8 +118,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AddUserResponseObj.cs" />
     <Compile Include="Models\AddCorporateResponseObj.cs" />
     <Compile Include="Models\AddCustomerResponseObj.cs" />
+    <Compile Include="Models\UserListResponseObj.cs" />
+    <Compile Include="Models\UserDetailsResponseObj.cs" />
     <Compile Include="Models\CorporateViewModel.cs" />
     <Compile Include="Models\CorporateDetailsResponseObj.cs" />
     <Compile Include="Models\CustomerDetailsResponseObj.cs" />

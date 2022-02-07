@@ -46,6 +46,14 @@ namespace LoyalFriends.Controllers
             var Query = "select * from [LK].[Lookups] as l where l.LookupCategoryID=" + (int)LookupCategories.AccountType + " or l.LookupCategoryID=" + (int)LookupCategories.CustomerStatus+ " or l.LookupCategoryID="+ (int)LookupCategories.RequestType;
             return Lookups(request, Query);
         }
+
+        [HttpGet]
+        [ResponseType(typeof(LookupResponseObj))]
+        public HttpResponseMessage GetUserLookups(HttpRequestMessage request)
+        {
+            var Query = "select * from [LK].[Lookups] as l where l.LookupCategoryID=" + (int)LookupCategories.UserRole;
+            return Lookups(request, Query);
+        }
         public HttpResponseMessage Lookups(HttpRequestMessage request, string Query)
         {
             var ResponseMessage = new HttpResponseMessage();
@@ -63,6 +71,8 @@ namespace LoyalFriends.Controllers
                 var RouterDeliveryMethodLst = Lookups.Where(c => c.LookupCategoryID == (int)LookupCategories.RouterDeliveryMethod).ToList();
                 var CustomerTypeLst = Lookups.Where(c => c.LookupCategoryID == (int)LookupCategories.CustomerType).ToList();
                 var AccountTypeLst = Lookups.Where(c => c.LookupCategoryID == (int)LookupCategories.AccountType).ToList();
+                var UserRoleLst = Lookups.Where(c => c.LookupCategoryID == (int)LookupCategories.UserRole).ToList();
+
                 LookupsList list = new LookupsList
                 {
                     Governorate = MappingLookupList(Governorates),
@@ -74,7 +84,8 @@ namespace LoyalFriends.Controllers
                     RouterType = MappingLookupList(RouterTypeLst),
                     RouterDeliveryMethod = MappingLookupList(RouterDeliveryMethodLst),
                     CustomerType = MappingLookupList(CustomerTypeLst),
-                    AccountType= MappingLookupList(AccountTypeLst)
+                    AccountType= MappingLookupList(AccountTypeLst),
+                    UserRole= MappingLookupList(UserRoleLst)
                 };
 
                 resposeObj.status = "successfully";
