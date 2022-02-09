@@ -81,7 +81,10 @@ namespace Inno.Service.User
         {
             return UserRepository.ExecuteSQLQuery(query, parameters);
         }
-
+        public int GetUserCount()
+        {
+            return UserRepository.Table.Count();
+        }
     }
 
 }

@@ -57,16 +57,22 @@ namespace LoyalFriends.Controllers
             {
                 if (UserService.IsFound(Uservm.UserName))
                 {
-                    resposeObj.status = "Invalid UserName";
-                    ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
+                    resposeObj.status = "Failure";
+                    resposeObj.error = "Username is already exist";
+                    ResponseMessage = request.CreateResponse(HttpStatusCode.BadRequest, resposeObj);
                 }
-                var Usr = UserVMMapping(Uservm);
-                Usr.CreatedBy = UserID;
-                Usr.CreatedOn = DateTime.Now.Date;
-                UserService.AddUser(Usr);
-                resposeObj.UserId = Usr.ID;
-                resposeObj.status = "successfully";
-                ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
+                else
+                {
+                    var Usr = UserVMMapping(Uservm);
+                    Usr.CreatedBy = UserID;
+                    Usr.CreatedOn = DateTime.Now.Date;
+                    UserService.AddUser(Usr);
+                    resposeObj.UserId = Usr.ID;
+                    resposeObj.status = "successfully";
+                    ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
+
+                }
+
             }
             catch (Exception ex)
             {
@@ -135,15 +141,24 @@ namespace LoyalFriends.Controllers
             var resposeObj = new AddUserResponseObj();
             try
             {
-                var U = UserVMMapping(UserVM);
-                U.ID = UID;
-                U.ModifiedBy = UserID;
-                U.ModifiedOn = DateTime.Now.Date;
-                UserService.EditUser(U);
+                if (UserService.IsFound(UserVM.UserName))
+                {
+                    resposeObj.status = "Failure";
+                    resposeObj.error = "Username is already exist";
+                    ResponseMessage = request.CreateResponse(HttpStatusCode.BadRequest, resposeObj);
+                }
+                else
+                {
+                    var U = UserVMMapping(UserVM);
+                    U.ID = UID;
+                    U.ModifiedBy = UserID;
+                    U.ModifiedOn = DateTime.Now.Date;
+                    UserService.EditUser(U);
 
-                resposeObj.UserId = U.ID;
-                resposeObj.status = "successfully";
-                ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
+                    resposeObj.UserId = U.ID;
+                    resposeObj.status = "successfully";
+                    ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
+                }
             }
             catch (Exception ex)
             {
@@ -188,6 +203,7 @@ namespace LoyalFriends.Controllers
             List<UserViewModel> Userslist = new List<UserViewModel>();
             try
             {
+                int Count = UserService.GetUserCount();
                 var Users = UserService.GetUserBySQLStatment("select * from [dbo].[Users]as c order by c.ID desc OFFSET " + (Page - 1) * PageLimit + " ROWS FETCH NEXT " + PageLimit + " ROWS ONLY", new object[] { });
                 if (Users.Count > 0)
                 {
@@ -200,7 +216,7 @@ namespace LoyalFriends.Controllers
                 }
 
                 resposeObj.Users = Userslist;
-                resposeObj.TotalCount = Users.Count;
+                resposeObj.TotalCount = Count;
                 resposeObj.status = "successfully";
                 ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
             }
@@ -224,7 +240,7 @@ namespace LoyalFriends.Controllers
             List<UserViewModel> Userslist = new List<UserViewModel>();
             try
             {
-                var Users = UserService.GetUserBySQLStatment("select * from [dbo].[Users]as c where c.Mobile=" + SearchText , new object[] { });
+                var Users = UserService.GetUserBySQLStatment("select * from [dbo].[Users]as c where c.Mobile=" + SearchText, new object[] { });
                 if (Users.Count > 0)
                 {
                     Users.ForEach(c =>
