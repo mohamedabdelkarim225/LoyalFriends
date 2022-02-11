@@ -35,6 +35,12 @@ namespace LoyalFriends.Controllers
                     resposeObj.status = "successfully";
                     ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
                 }
+                else
+                {
+                    resposeObj.status = "Failure";
+                    resposeObj.error = "User Name or Password is invalid";
+                    ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
+                }
 
             }
             catch (Exception ex)
@@ -59,7 +65,7 @@ namespace LoyalFriends.Controllers
                 {
                     resposeObj.status = "Failure";
                     resposeObj.error = "Username is already exist";
-                    ResponseMessage = request.CreateResponse(HttpStatusCode.BadRequest, resposeObj);
+                    ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
                 }
                 else
                 {
@@ -111,13 +117,13 @@ namespace LoyalFriends.Controllers
 
         [HttpGet]
         [ResponseType(typeof(UserDetailsResponseObj))]
-        public HttpResponseMessage EditUser(HttpRequestMessage request, int UserID)
+        public HttpResponseMessage EditUser(HttpRequestMessage request, int UID)
         {
             var ResponseMessage = new HttpResponseMessage();
             var resposeObj = new UserDetailsResponseObj();
             try
             {
-                var Usr = UserService.GetUserById(UserID);
+                var Usr = UserService.GetUserById(UID);
                 var UVM = UserMapping(Usr);
                 resposeObj.User = UVM;
                 resposeObj.status = "successfully";
@@ -141,11 +147,12 @@ namespace LoyalFriends.Controllers
             var resposeObj = new AddUserResponseObj();
             try
             {
-                if (UserService.IsFound(UserVM.UserName))
+                var User = UserService.GetUserById(UID);
+                if (UserVM.UserName != User.UserName && UserService.IsFound(UserVM.UserName))
                 {
                     resposeObj.status = "Failure";
                     resposeObj.error = "Username is already exist";
-                    ResponseMessage = request.CreateResponse(HttpStatusCode.BadRequest, resposeObj);
+                    ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
                 }
                 else
                 {
@@ -299,6 +306,7 @@ namespace LoyalFriends.Controllers
                 ModifiedBy = U.ModifiedBy,
                 ModifiedOn = U.ModifiedOn.ToStrDate(),
                 Name = U.Name,
+                ID = U.ID,
                 Password = U.Password,
                 UserName = U.UserName,
                 UserRole = LookupService.GetLookupName(U.UserRoleID),
