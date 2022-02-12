@@ -103,7 +103,10 @@ namespace Inno.Service.Lookup
            return LookupRepository.ExecuteSQLQuery(query, parameters);
         }
 
-
+        public int GetLookupCount()
+        {
+            return LookupRepository.Table.Count();
+        }
         #endregion
     }
 }

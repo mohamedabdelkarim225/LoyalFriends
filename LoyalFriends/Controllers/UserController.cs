@@ -275,7 +275,6 @@ namespace LoyalFriends.Controllers
         }
         [HttpGet]
         [ResponseType(typeof(CorporateListResponseObj))]
-
         public User UserVMMapping(UserViewModel Uservm)
         {
             User Usr = new User

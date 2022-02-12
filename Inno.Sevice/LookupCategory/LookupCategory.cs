@@ -75,7 +75,10 @@ namespace Inno.Service.LookupCategory
             }
             return true;
         }
-
+        public string GetCategoryName(int? id)
+        {
+            return (id != null ? LookupCategoryRepository.Table.Where(c => c.ID == id).FirstOrDefault().Name : "");
+        }
         public IQueryable<Core.Data.LookupCategory> GetAllLookupCategorys()
         {
             var LookupCategorys = LookupCategoryRepository.Table.AsQueryable();

@@ -118,9 +118,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AddLookupResponseObj.cs" />
     <Compile Include="Models\AddUserResponseObj.cs" />
     <Compile Include="Models\AddCorporateResponseObj.cs" />
     <Compile Include="Models\AddCustomerResponseObj.cs" />
+    <Compile Include="Models\LookupCategoryResponseObj.cs" />
+    <Compile Include="Models\LookupViewmodel.cs" />
+    <Compile Include="Models\LookupDetailsResponseObj.cs" />
+    <Compile Include="Models\LookupListResponseObj.cs" />
     <Compile Include="Models\UserListResponseObj.cs" />
     <Compile Include="Models\UserDetailsResponseObj.cs" />
     <Compile Include="Models\CorporateViewModel.cs" />
