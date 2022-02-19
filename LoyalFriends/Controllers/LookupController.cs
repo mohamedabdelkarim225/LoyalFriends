@@ -43,7 +43,7 @@ namespace LoyalFriends.Controllers
                     }
                     else
                     {
-                        resposeObj.status = "Failure";
+                        resposeObj.status = "successfully";
                         resposeObj.error = "LookupName is already exist";
                         ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
                     }
@@ -69,7 +69,7 @@ namespace LoyalFriends.Controllers
                     }
                     else
                     {
-                        resposeObj.status = "Failure";
+                        resposeObj.status = "successfully";
                         resposeObj.error = "LookupName is already exist";
                         ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
                     }
@@ -94,7 +94,7 @@ namespace LoyalFriends.Controllers
                     }
                     else
                     {
-                        resposeObj.status = "Failure";
+                        resposeObj.status = "successfully";
                         resposeObj.error = "LookupName is already exist";
                         ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
                     }
@@ -163,7 +163,7 @@ namespace LoyalFriends.Controllers
                     }
                     else
                     {
-                        resposeObj.status = "Failure";
+                        resposeObj.status = "successfully";
                         resposeObj.error = "LookupName is already exist";
                         ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
                     }
@@ -190,7 +190,7 @@ namespace LoyalFriends.Controllers
                     }
                     else
                     {
-                        resposeObj.status = "Failure";
+                        resposeObj.status = "successfully";
                         resposeObj.error = "LookupName is already exist";
                         ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
                     }
@@ -216,7 +216,7 @@ namespace LoyalFriends.Controllers
                     }
                     else
                     {
-                        resposeObj.status = "Failure";
+                        resposeObj.status = "successfully";
                         resposeObj.error = "LookupName is already exist";
                         ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
                     }
@@ -303,7 +303,7 @@ namespace LoyalFriends.Controllers
             List<LookupViewmodel> Lookupslist = new List<LookupViewmodel>();
             try
             {
-                var Lookups = LookupService.GetLookupBySQLStatment("select * from [LK].[Lookups] as c where c.Name=" + SearchText, new object[] { });
+                var Lookups = LookupService.GetLookupBySQLStatment("select * from [LK].[Lookups] as c where c.Name=" + SearchText+ "order by c.ID desc OFFSET " + (Page - 1) * PageLimit + " ROWS FETCH NEXT " + PageLimit + " ROWS ONLY", new object[] { });
                 if (Lookups.Count > 0)
                 {
                     Lookups.ForEach(c =>
@@ -339,7 +339,8 @@ namespace LoyalFriends.Controllers
             List<LookupViewmodel> Lookupslist = new List<LookupViewmodel>();
             try
             {
-                var Lookups = LookupService.GetLookupBySQLStatment("select * from [LK].[Lookups] as c where c.LookupCategoryID=" + CategoryID, new object[] { });
+                int Count = LookupService.GetLookupCount(CategoryID);
+                var Lookups = LookupService.GetLookupBySQLStatment("select * from [LK].[Lookups] as c where c.LookupCategoryID=" + CategoryID + "order by c.ID desc OFFSET " + (Page - 1) * PageLimit + " ROWS FETCH NEXT " + PageLimit + " ROWS ONLY", new object[] { });
                 if (Lookups.Count > 0)
                 {
                     Lookups.ForEach(c =>
@@ -351,7 +352,7 @@ namespace LoyalFriends.Controllers
                 }
 
                 resposeObj.Lookups = Lookupslist;
-                resposeObj.TotalCount = Lookups.Count;
+                resposeObj.TotalCount = Count;
                 resposeObj.status = "successfully";
                 ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
             }
@@ -369,42 +370,42 @@ namespace LoyalFriends.Controllers
         [ResponseType(typeof(LookupResponseObj))]
         public HttpResponseMessage GetServiceProvider(HttpRequestMessage request)
         {
-            var Query = "select * from [LK].[Lookups] as l where l.LookupCategoryID=" + (int)LookupCategories.ServiceProvider;
+            var Query = "select * from [LK].[Lookups] as l where l.IsActive='true' and l.LookupCategoryID=" + (int)LookupCategories.ServiceProvider;
             return Lookups(request, Query);
         }
         [HttpGet]
         [ResponseType(typeof(LookupResponseObj))]
         public HttpResponseMessage GetServiceQuota(HttpRequestMessage request, int ServiceProviderID)
         {
-            var Query = "select * from [LK].[Lookups] as l where l.LookupCategoryID=" + (int)LookupCategories.ServiceQuota + " and l.ParentID=" + ServiceProviderID;
+            var Query = "select * from [LK].[Lookups] as l where l.IsActive='true' and l.LookupCategoryID=" + (int)LookupCategories.ServiceQuota + " and l.ParentID=" + ServiceProviderID;
             return Lookups(request, Query);
         }
         [HttpGet]
         [ResponseType(typeof(LookupResponseObj))]
         public HttpResponseMessage GetOffer(HttpRequestMessage request, int ServiceQuotaID)
         {
-            var Query = "select * from [LK].[Lookups] as l where l.LookupCategoryID=" + (int)LookupCategories.Offer + " and l.ParentID=" + ServiceQuotaID;
+            var Query = "select * from [LK].[Lookups] as l where l.IsActive='true' and l.LookupCategoryID=" + (int)LookupCategories.Offer + " and l.ParentID=" + ServiceQuotaID;
             return Lookups(request, Query);
         }
         [HttpGet]
         [ResponseType(typeof(LookupResponseObj))]
         public HttpResponseMessage GetCustomerLookups(HttpRequestMessage request)
         {
-            var Query = "select * from [LK].[Lookups] as l where l.LookupCategoryID=" + (int)LookupCategories.Governorate +  " or l.LookupCategoryID=" + (int)LookupCategories.ServiceProvider + " or l.LookupCategoryID=" + (int)LookupCategories.CustomerStatus + " or l.LookupCategoryID=" + (int)LookupCategories.RouterType + " or l.LookupCategoryID=" + (int)LookupCategories.RouterDeliveryMethod + " or l.LookupCategoryID=" + (int)LookupCategories.CustomerType + " or l.LookupCategoryID=" + (int)LookupCategories.RequestType;
+            var Query = "select * from [LK].[Lookups] as l where l.IsActive='true' and l.LookupCategoryID=" + (int)LookupCategories.Governorate +  " or l.LookupCategoryID=" + (int)LookupCategories.ServiceProvider + " or l.LookupCategoryID=" + (int)LookupCategories.CustomerStatus + " or l.LookupCategoryID=" + (int)LookupCategories.RouterType + " or l.LookupCategoryID=" + (int)LookupCategories.RouterDeliveryMethod + " or l.LookupCategoryID=" + (int)LookupCategories.CustomerType + " or l.LookupCategoryID=" + (int)LookupCategories.RequestType;
             return Lookups(request, Query);
         }
         [HttpGet]
         [ResponseType(typeof(LookupResponseObj))]
         public HttpResponseMessage GetCorporateLookups(HttpRequestMessage request)
         {
-            var Query = "select * from [LK].[Lookups] as l where l.LookupCategoryID=" + (int)LookupCategories.AccountType + " or l.LookupCategoryID=" + (int)LookupCategories.CustomerStatus+ " or l.LookupCategoryID="+ (int)LookupCategories.RequestType;
+            var Query = "select * from [LK].[Lookups] as l where l.IsActive='true' and  l.LookupCategoryID=" + (int)LookupCategories.AccountType + " or l.LookupCategoryID=" + (int)LookupCategories.CustomerStatus+ " or l.LookupCategoryID="+ (int)LookupCategories.RequestType;
             return Lookups(request, Query);
         }
         [HttpGet]
         [ResponseType(typeof(LookupResponseObj))]
         public HttpResponseMessage GetUserLookups(HttpRequestMessage request)
         {
-            var Query = "select * from [LK].[Lookups] as l where l.LookupCategoryID=" + (int)LookupCategories.UserRole;
+            var Query = "select * from [LK].[Lookups] as l where l.IsActive='true' and l.LookupCategoryID=" + (int)LookupCategories.UserRole;
             return Lookups(request, Query);
         }
 

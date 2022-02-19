@@ -107,6 +107,10 @@ namespace Inno.Service.Lookup
         {
             return LookupRepository.Table.Count();
         }
+        public int GetLookupCount(int CategoryID)
+        {
+            return LookupRepository.Table.Where(a => a.LookupCategoryID == CategoryID).Count();
+        }
         #endregion
     }
 }
