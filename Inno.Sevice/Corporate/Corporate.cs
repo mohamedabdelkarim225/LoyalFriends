@@ -90,7 +90,10 @@ namespace Inno.Service.Corporate
         {
             return CorporateRepository.Table.Count(predicate);
         }
-
+        public int GetCorporateCount()
+        {
+            return CorporateRepository.Table.Count();
+        }
         #endregion
     }
 }

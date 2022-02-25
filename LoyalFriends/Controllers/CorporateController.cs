@@ -207,8 +207,8 @@ namespace LoyalFriends.Controllers
                 }
                 else
                 {
+                    Count = CorporateService.GetCorporateCount();
                     Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c order by c.ID desc OFFSET " + (Page - 1) * PageLimit + " ROWS FETCH NEXT " + PageLimit + " ROWS ONLY", new object[] { });
-                    Count = Corporates.Count;
                     if (Corporates.Count > 0)
                     {
                         Corporates.ForEach(c =>
@@ -273,8 +273,8 @@ namespace LoyalFriends.Controllers
                 {
                     if (string.IsNullOrEmpty(SearchText))
                     {
+                        Count = CorporateService.GetCorporateCount();
                         Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c order by c.ID desc OFFSET " + (Page - 1) * PageLimit + " ROWS FETCH NEXT " + PageLimit + " ROWS ONLY", new object[] { });
-                        Count = Corporates.Count;
                     }
                     else
                     {
@@ -345,8 +345,8 @@ namespace LoyalFriends.Controllers
                 {
                     if (CustomerStatusID == 0)
                     {
+                        Count = CorporateService.GetCorporateCount();
                         Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c order by c.ID desc OFFSET " + (Page - 1) * PageLimit + " ROWS FETCH NEXT " + PageLimit + " ROWS ONLY", new object[] { });
-                        Count = Corporates.Count;
                     }
                     else
                     {
