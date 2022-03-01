@@ -28,7 +28,7 @@ namespace Inno.Service.CustomerCommentsHistory
 
         public Core.Data.CustomerCommentsHistory GetLastCustomerCommentsHistoryByCustomerId(int id)
         {
-            var CustomerCommentsHistory = CustomerCommentsHistoryRepository.Table.Where(c => c.CustomerID == id).ToList().LastOrDefault();
+            var CustomerCommentsHistory = CustomerCommentsHistoryRepository.Table.Where(c => c.CustomerID == id).LastOrDefault();
            
             return CustomerCommentsHistory;
         }

@@ -29,7 +29,6 @@ namespace Inno.Service.CorporateCommentsHistory
         public Core.Data.CorporateCommentsHistory GetLastCorporateCommentsHistoryByCorporateId(int id)
         {
             var CorporateCommentsHistory = CorporateCommentsHistoryRepository.Table.Where(c => c.CorporateID == id).ToList().LastOrDefault();
-           
             return CorporateCommentsHistory;
         }
 

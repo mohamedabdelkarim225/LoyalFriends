@@ -82,11 +82,18 @@ namespace LoyalFriends.Controllers
                 var History = CorporateCommentsHistoryService.GetLastCorporateCommentsHistoryByCorporateId(Cor.ID);
                 if (History != null)
                 {
-                    if (Cor.Comment != History.Comment)
+                    if (Cor.Comment != History.Comment &&!string.IsNullOrEmpty(Cor.Comment))
                     {
                         AddCorporateCommentsHistory(Cor.ID, UserID, Cor.Comment);
                     }
 
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(Cor.Comment))
+                    {
+                        AddCorporateCommentsHistory(Cor.ID, UserID, Cor.Comment);
+                    }
                 }
                 resposeObj.CorporateId = Cor.ID;
                 resposeObj.status = "successfully";

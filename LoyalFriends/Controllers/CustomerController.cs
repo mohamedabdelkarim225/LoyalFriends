@@ -84,11 +84,18 @@ namespace LoyalFriends.Controllers
                 var History = CustomerCommentsHistoryService.GetLastCustomerCommentsHistoryByCustomerId(Cust.ID);
                 if (History != null)
                 {
-                    if (Cust.Comment != History.Comment)
+                    if (Cust.Comment != History.Comment && !string.IsNullOrEmpty(Cust.Comment))
                     {
                         AddCustomerCommentsHistory(Cust.ID, UserID, Cust.Comment);
                     }
 
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(Cust.Comment))
+                    {
+                        AddCustomerCommentsHistory(Cust.ID, UserID, Cust.Comment);
+                    }
                 }
                 resposeObj.CustomerId = Cust.ID;
                 resposeObj.status = "successfully";
