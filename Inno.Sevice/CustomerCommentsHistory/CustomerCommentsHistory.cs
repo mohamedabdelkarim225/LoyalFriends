@@ -28,9 +28,12 @@ namespace Inno.Service.CustomerCommentsHistory
 
         public Core.Data.CustomerCommentsHistory GetLastCustomerCommentsHistoryByCustomerId(int id)
         {
-            var CustomerCommentsHistory = CustomerCommentsHistoryRepository.Table.Where(c => c.CustomerID == id).LastOrDefault();
-           
-            return CustomerCommentsHistory;
+            var CustomerCommentsHistoryList = CustomerCommentsHistoryRepository.Table.Where(c => c.CustomerID == id).ToList();
+            if (CustomerCommentsHistoryList.Count > 0)
+            {
+                return CustomerCommentsHistoryList.LastOrDefault();
+            }
+            return null;
         }
 
         public bool AddCustomerCommentsHistory(Core.Data.CustomerCommentsHistory model)
@@ -88,16 +91,16 @@ namespace Inno.Service.CustomerCommentsHistory
             var CustomerCommentsHistorys = CustomerCommentsHistoryRepository.Table.AsQueryable();
             return CustomerCommentsHistorys;
         }
-        
+
         public IQueryable<Core.Data.CustomerCommentsHistory> SearchFor(Expression<Func<Core.Data.CustomerCommentsHistory, bool>> predicate)
         {
             return CustomerCommentsHistoryRepository.SearchFor(predicate);
         }
 
 
-        public List <Core.Data.CustomerCommentsHistory> GetCustomerCommentsHistoryBySQLStatment(string query, object[] parameters)
+        public List<Core.Data.CustomerCommentsHistory> GetCustomerCommentsHistoryBySQLStatment(string query, object[] parameters)
         {
-           return CustomerCommentsHistoryRepository.ExecuteSQLQuery(query, parameters);
+            return CustomerCommentsHistoryRepository.ExecuteSQLQuery(query, parameters);
         }
 
 

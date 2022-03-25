@@ -22,6 +22,7 @@ namespace LoyalFriends.Models
         public Nullable<int> RequestTypeID { get; set; }
         public string RequestType { get; set; }
         public string Comment { get; set; }
+        public string ContactDate { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public string CreatedByName { get; set; }
         public string CreatedOn { get; set; }

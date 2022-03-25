@@ -17,6 +17,7 @@ namespace Inno.Core.Data
         public Nullable<int> CustomerStatusID { get; set; }
         public Nullable<int> RequestTypeID { get; set; }
         public string Comment { get; set; }
+        public Nullable<System.DateTime> ContactDate { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<int> ModifiedBy { get; set; }

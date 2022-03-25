@@ -26,6 +26,7 @@ namespace Inno.Data.Mapping
             this.Property(t => t.CustomerStatusID).HasColumnName("CustomerStatusID");
             this.Property(t => t.RequestTypeID).HasColumnName("RequestTypeID");
             this.Property(t => t.Comment).HasColumnName("Comment");
+            this.Property(t => t.ContactDate).HasColumnName("ContactDate");
             this.Property(t => t.CreatedBy).HasColumnName("CreatedBy");
             this.Property(t => t.CreatedOn).HasColumnName("CreatedOn");
             this.Property(t => t.ModifiedBy).HasColumnName("ModifiedBy");

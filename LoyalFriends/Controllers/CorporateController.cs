@@ -156,7 +156,8 @@ namespace LoyalFriends.Controllers
                 RequestTypeID = CorporateVM.RequestTypeID,
                 LinesNumber = CorporateVM.LinesNumber,
                 Mobile = CorporateVM.Mobile,
-                AccountNumber = CorporateVM.AccountNumber
+                AccountNumber = CorporateVM.AccountNumber,
+                ContactDate = Convert.ToDateTime(CorporateVM.ContactDate),
 
             };
             return Cor;
@@ -411,7 +412,8 @@ namespace LoyalFriends.Controllers
                 CompanyAddress = C.CompanyAddress,
                 CompanyName = C.CompanyName,
                 CompanyType = C.CompanyType,
-                LinesNumber = C.LinesNumber
+                LinesNumber = C.LinesNumber,
+                ContactDate = C.ContactDate.ToStrDate(),
 
             };
             return CVM;

@@ -28,8 +28,12 @@ namespace Inno.Service.CorporateCommentsHistory
 
         public Core.Data.CorporateCommentsHistory GetLastCorporateCommentsHistoryByCorporateId(int id)
         {
-            var CorporateCommentsHistory = CorporateCommentsHistoryRepository.Table.Where(c => c.CorporateID == id).ToList().LastOrDefault();
-            return CorporateCommentsHistory;
+            var CorporateCommentsHistoryList = CorporateCommentsHistoryRepository.Table.Where(c => c.CorporateID == id).ToList();
+            if (CorporateCommentsHistoryList.Count > 0)
+            {
+                return CorporateCommentsHistoryList.LastOrDefault();
+            }
+            return null;
         }
 
         public bool AddCorporateCommentsHistory(Core.Data.CorporateCommentsHistory model)
@@ -87,16 +91,16 @@ namespace Inno.Service.CorporateCommentsHistory
             var CorporateCommentsHistorys = CorporateCommentsHistoryRepository.Table.AsQueryable();
             return CorporateCommentsHistorys;
         }
-        
+
         public IQueryable<Core.Data.CorporateCommentsHistory> SearchFor(Expression<Func<Core.Data.CorporateCommentsHistory, bool>> predicate)
         {
             return CorporateCommentsHistoryRepository.SearchFor(predicate);
         }
 
 
-        public List <Core.Data.CorporateCommentsHistory> GetCorporateCommentsHistoryBySQLStatment(string query, object[] parameters)
+        public List<Core.Data.CorporateCommentsHistory> GetCorporateCommentsHistoryBySQLStatment(string query, object[] parameters)
         {
-           return CorporateCommentsHistoryRepository.ExecuteSQLQuery(query, parameters);
+            return CorporateCommentsHistoryRepository.ExecuteSQLQuery(query, parameters);
         }
 
 
