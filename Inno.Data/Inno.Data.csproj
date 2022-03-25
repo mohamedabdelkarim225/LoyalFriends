@@ -55,8 +55,12 @@
   <ItemGroup>
     <Compile Include="Mapping\CorporateMap.cs" />
     <Compile Include="Mapping\CorporateCommentsHistoryMap.cs" />
+    <Compile Include="Mapping\CorporateRejectedReasonHistoryMap.cs" />
+    <Compile Include="Mapping\CorporateStatusHistoryMap.cs" />
     <Compile Include="Mapping\CustomerCommentsHistoryMap.cs" />
     <Compile Include="Mapping\CustomerMap.cs" />
+    <Compile Include="Mapping\CustomerRejectedReasonHistoryMap.cs" />
+    <Compile Include="Mapping\CustomerStatusHistoryMap.cs" />
     <Compile Include="Mapping\LookupCategoryMap.cs" />
     <Compile Include="Mapping\LookupMap.cs" />
     <Compile Include="Mapping\UserMap.cs" />

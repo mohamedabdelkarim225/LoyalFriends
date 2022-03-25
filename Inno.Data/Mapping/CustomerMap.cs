@@ -49,6 +49,7 @@ namespace Inno.Data.Mapping
             this.Property(t => t.RouterDeliveryMethodID).HasColumnName("RouterDeliveryMethodID");
             this.Property(t => t.CustomerTypeID).HasColumnName("CustomerTypeID");
             this.Property(t => t.Comment).HasColumnName("Comment");
+            this.Property(t => t.RejectedReason).HasColumnName("RejectedReason");
             this.Property(t => t.CreatedBy).HasColumnName("CreatedBy");
             this.Property(t => t.CreatedOn).HasColumnName("CreatedOn");
             this.Property(t => t.ModifiedBy).HasColumnName("ModifiedBy");

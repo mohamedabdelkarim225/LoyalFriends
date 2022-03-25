@@ -25,10 +25,10 @@ namespace LoyalFriends.Controllers
                 Cor.CreatedBy = UserID;
                 Cor.CreatedOn = DateTime.Now.Date;
                 CorporateService.AddCorporate(Cor);
-                if (!string.IsNullOrEmpty(Cor.Comment))
-                {
-                    AddCorporateCommentsHistory(Cor.ID, UserID, Cor.Comment);
-                }
+                //if (!string.IsNullOrEmpty(Cor.Comment))
+                //{
+                //    AddCorporateCommentsHistory(Cor.ID, UserID, Cor.Comment);
+                //}
                 resposeObj.CorporateId = Cor.ID;
                 resposeObj.status = "successfully";
                 ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
@@ -79,22 +79,22 @@ namespace LoyalFriends.Controllers
                 Cor.ModifiedBy = UserID;
                 Cor.ModifiedOn = DateTime.Now.Date;
                 CorporateService.EditCorporate(Cor);
-                var History = CorporateCommentsHistoryService.GetLastCorporateCommentsHistoryByCorporateId(Cor.ID);
-                if (History != null)
-                {
-                    if (Cor.Comment != History.Comment &&!string.IsNullOrEmpty(Cor.Comment))
-                    {
-                        AddCorporateCommentsHistory(Cor.ID, UserID, Cor.Comment);
-                    }
+                //var History = CorporateCommentsHistoryService.GetLastCorporateCommentsHistoryByCorporateId(Cor.ID);
+                //if (History != null)
+                //{
+                //    if (Cor.Comment != History.Comment &&!string.IsNullOrEmpty(Cor.Comment))
+                //    {
+                //        AddCorporateCommentsHistory(Cor.ID, UserID, Cor.Comment);
+                //    }
 
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(Cor.Comment))
-                    {
-                        AddCorporateCommentsHistory(Cor.ID, UserID, Cor.Comment);
-                    }
-                }
+                //}
+                //else
+                //{
+                //    if (!string.IsNullOrEmpty(Cor.Comment))
+                //    {
+                //        AddCorporateCommentsHistory(Cor.ID, UserID, Cor.Comment);
+                //    }
+                //}
                 resposeObj.CorporateId = Cor.ID;
                 resposeObj.status = "successfully";
                 ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
@@ -118,17 +118,37 @@ namespace LoyalFriends.Controllers
             {
                 var Corporate = CorporateService.GetCorporateById(CorporateID);
                 var CorVM = CorporateMapping(Corporate);
-                var HistoryLst = CorporateCommentsHistoryService.SearchFor(a => a.CorporateID == CorporateID).ToList();
-                List<CorporateHistoryviewModel> CorporateHistoryviewModelLst = new List<CorporateHistoryviewModel>();
-                if (HistoryLst.Count > 0)
+                var CommentsHistoryLst = CorporateCommentsHistoryService.SearchFor(a => a.CorporateID == CorporateID && a.Comment != null && a.Comment != string.Empty).ToList();
+                List<CorporateCommentsHistoryviewModel> CorporateCommentsHistoryviewModelLst = new List<CorporateCommentsHistoryviewModel>();
+                if (CommentsHistoryLst.Count > 0)
                 {
-                    HistoryLst.ForEach(a =>
+                    CommentsHistoryLst.ForEach(a =>
                     {
-                        CorporateHistoryviewModelLst.Add(CorporateCommentsHistoryMapping(a));
+                        CorporateCommentsHistoryviewModelLst.Add(CorporateCommentsHistoryMapping(a));
+                    });
+                }
+                var StatusHistoryLst = CorporateStatusHistoryService.SearchFor(a => a.CorporateID == CorporateID && a.CustomerStatusID != null).ToList();
+                List<CorporateStatusHistoryviewModel> CorporateStatusHistoryviewModelLst = new List<CorporateStatusHistoryviewModel>();
+                if (StatusHistoryLst.Count > 0)
+                {
+                    StatusHistoryLst.ForEach(a =>
+                    {
+                        CorporateStatusHistoryviewModelLst.Add(CorporateStatusHistoryMapping(a));
+                    });
+                }
+                var RejectedReasonHistoryLst = CorporateRejectedReasonHistoryService.SearchFor(a => a.CorporateID == CorporateID && a.RejectedReason != null&& a.RejectedReason != string.Empty).ToList();
+                List<CorporateRejectedReasonHistoryviewModel> CorporateRejectedReasonHistoryviewModelLst = new List<CorporateRejectedReasonHistoryviewModel>();
+                if (RejectedReasonHistoryLst.Count > 0)
+                {
+                    RejectedReasonHistoryLst.ForEach(a =>
+                    {
+                        CorporateRejectedReasonHistoryviewModelLst.Add(CorporateRejectedReasonHistoryMapping(a));
                     });
                 }
                 resposeObj.Corporate = CorVM;
-                resposeObj.History = CorporateHistoryviewModelLst;
+                resposeObj.CommentsHistory = CorporateCommentsHistoryviewModelLst;
+                resposeObj.StatusHistory = CorporateStatusHistoryviewModelLst;
+                resposeObj.RejectedReasonHistory = CorporateRejectedReasonHistoryviewModelLst;
                 resposeObj.status = "successfully";
                 ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
 
@@ -158,34 +178,54 @@ namespace LoyalFriends.Controllers
                 Mobile = CorporateVM.Mobile,
                 AccountNumber = CorporateVM.AccountNumber,
                 ContactDate = Convert.ToDateTime(CorporateVM.ContactDate),
+                RejectedReason=CorporateVM.RejectedReason
 
             };
             return Cor;
         }
 
-        public bool AddCorporateCommentsHistory(int CorporateID, int UserID, string Comment)
-        {
-            CorporateCommentsHistory CCH = new CorporateCommentsHistory
-            {
-                CorporateID = CorporateID,
-                Comment = Comment,
-                CreatedBy = UserID,
-                CreatedOn = DateTime.Now
-            };
-            return CorporateCommentsHistoryService.AddCorporateCommentsHistory(CCH);
-        }
+        //public bool AddCorporateCommentsHistory(int CorporateID, int UserID, string Comment)
+        //{
+        //    CorporateCommentsHistory CCH = new CorporateCommentsHistory
+        //    {
+        //        CorporateID = CorporateID,
+        //        Comment = Comment,
+        //        CreatedBy = UserID,
+        //        CreatedOn = DateTime.Now
+        //    };
+        //    return CorporateCommentsHistoryService.AddCorporateCommentsHistory(CCH);
+        //}
 
-        public CorporateHistoryviewModel CorporateCommentsHistoryMapping(CorporateCommentsHistory History)
+        public CorporateCommentsHistoryviewModel CorporateCommentsHistoryMapping(CorporateCommentsHistory CommentsHistory)
         {
-            var HVM = new CorporateHistoryviewModel
+            var HCVM = new CorporateCommentsHistoryviewModel
             {
-                Comment = History.Comment,
-                CreatedBy = UserService.GetUserName(History.CreatedBy),
-                CreatedOn = History.CreatedOn.ToStrDateTime()
+                Comment = CommentsHistory.Comment,
+                CreatedBy = UserService.GetUserName(CommentsHistory.ActionBy),
+                CreatedOn = CommentsHistory.ActionOn.ToStrDateTime()
             };
-            return HVM;
+            return HCVM;
         }
-
+        public CorporateStatusHistoryviewModel CorporateStatusHistoryMapping(CorporateStatusHistory StatusHistory)
+        {
+            var HSVM = new CorporateStatusHistoryviewModel
+            {
+                Status = LookupService.GetLookupName(StatusHistory.CustomerStatusID),
+                CreatedBy = UserService.GetUserName(StatusHistory.ActionBy),
+                CreatedOn = StatusHistory.ActionOn.ToStrDateTime()
+            };
+            return HSVM;
+        }
+        public CorporateRejectedReasonHistoryviewModel CorporateRejectedReasonHistoryMapping(CorporateRejectedReasonHistory RejectedReasonHistory)
+        {
+            var HRVM = new CorporateRejectedReasonHistoryviewModel
+            {
+                RejectedReason = RejectedReasonHistory.RejectedReason,
+                CreatedBy = UserService.GetUserName(RejectedReasonHistory.ActionBy),
+                CreatedOn = RejectedReasonHistory.ActionOn.ToStrDateTime()
+            };
+            return HRVM;
+        }
         [HttpGet]
         [ResponseType(typeof(CorporateListResponseObj))]
         public HttpResponseMessage CorporateList(HttpRequestMessage request, int UserID, string UserRole, int Page, int PageLimit)
@@ -263,7 +303,7 @@ namespace LoyalFriends.Controllers
                     }
                     else
                     {
-                        Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c where c.CreatedBy=" + UserID + "and c.Mobile=" + SearchText+ "or c.AccountNumber=" + SearchText, new object[] { });
+                        Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c where c.CreatedBy=" + UserID + "and c.Mobile=" + SearchText + "or c.AccountNumber=" + SearchText, new object[] { });
                         Count = Corporates.Count;
                     }
                     if (Corporates.Count > 0)
@@ -286,7 +326,7 @@ namespace LoyalFriends.Controllers
                     }
                     else
                     {
-                        Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c where c.Mobile=" + SearchText+ "or c.AccountNumber=" + SearchText, new object[] { });
+                        Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c where c.Mobile=" + SearchText + "or c.AccountNumber=" + SearchText, new object[] { });
                         Count = Corporates.Count;
                     }
 
@@ -328,7 +368,7 @@ namespace LoyalFriends.Controllers
                 var Corporates = new List<Corporate>();
                 if (UserRole == Roles.Employee.ToString())
                 {
-                    if (CustomerStatusID==0)
+                    if (CustomerStatusID == 0)
                     {
                         Count = CorporateService.GetCorporateCount(a => a.CreatedBy == UserID);
                         Corporates = CorporateService.GetCorporateBySQLStatment("select * from [dbo].[Corporate]as c where c.CreatedBy=" + UserID + "  order by c.ID desc OFFSET " + (Page - 1) * PageLimit + " ROWS FETCH NEXT " + PageLimit + " ROWS ONLY", new object[] { });
@@ -414,7 +454,7 @@ namespace LoyalFriends.Controllers
                 CompanyType = C.CompanyType,
                 LinesNumber = C.LinesNumber,
                 ContactDate = C.ContactDate.ToStrDate(),
-
+                RejectedReason=C.RejectedReason
             };
             return CVM;
         }

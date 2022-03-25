@@ -15,10 +15,11 @@ namespace Inno.Data.Mapping
             // Table & Column Mappings
             this.ToTable("CustomerCommentsHistory");
             this.Property(t => t.ID).HasColumnName("ID");
-            this.Property(t => t.Comment).HasColumnName("Comment");
             this.Property(t => t.CustomerID).HasColumnName("CustomerID");
-            this.Property(t => t.CreatedBy).HasColumnName("CreatedBy");
-            this.Property(t => t.CreatedOn).HasColumnName("CreatedOn");
+            this.Property(t => t.Comment).HasColumnName("Comment");
+            this.Property(t => t.Action).HasColumnName("Action");
+            this.Property(t => t.ActionBy).HasColumnName("ActionBy");
+            this.Property(t => t.ActionOn).HasColumnName("ActionOn");
         }
     }
 }

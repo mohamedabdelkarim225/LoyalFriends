@@ -40,8 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CorporateRejectedReasonHistory\CorporateRejectedReasonHistory.cs" />
+    <Compile Include="CorporateStatusHistory\CorporateStatusHistory .cs" />
     <Compile Include="Corporate\Corporate.cs" />
     <Compile Include="CorporateCommentsHistory\CorporateCommentsHistory.cs" />
+    <Compile Include="CustomerRejectedReasonHistory\CustomerRejectedReasonHistory.cs" />
+    <Compile Include="CustomerStatusHistory\CustomerStatusHistory.cs" />
     <Compile Include="CustomerCommentsHistory\CustomerCommentsHistory.cs" />
     <Compile Include="Customer\Customer.cs" />
     <Compile Include="LookupCategory\LookupCategory.cs" />

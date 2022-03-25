@@ -27,10 +27,10 @@ namespace LoyalFriends.Controllers
                 Cust.CreatedBy = UserID;
                 Cust.CreatedOn = DateTime.Now.Date;
                 CustomerService.AddCustomer(Cust);
-                if (!string.IsNullOrEmpty(Cust.Comment))
-                {
-                    AddCustomerCommentsHistory(Cust.ID, UserID, Cust.Comment);
-                }
+                //if (!string.IsNullOrEmpty(Cust.Comment))
+                //{
+                //    AddCustomerCommentsHistory(Cust.ID, UserID, Cust.Comment);
+                //}
                 resposeObj.CustomerId = Cust.ID;
                 resposeObj.status = "successfully";
                 ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
@@ -81,22 +81,22 @@ namespace LoyalFriends.Controllers
                 Cust.ModifiedBy = UserID;
                 Cust.ModifiedOn = DateTime.Now.Date;
                 CustomerService.EditCustomer(Cust);
-                var History = CustomerCommentsHistoryService.GetLastCustomerCommentsHistoryByCustomerId(Cust.ID);
-                if (History != null)
-                {
-                    if (Cust.Comment != History.Comment && !string.IsNullOrEmpty(Cust.Comment))
-                    {
-                        AddCustomerCommentsHistory(Cust.ID, UserID, Cust.Comment);
-                    }
+                //var History = CustomerCommentsHistoryService.GetLastCustomerCommentsHistoryByCustomerId(Cust.ID);
+                //if (History != null)
+                //{
+                //    if (Cust.Comment != History.Comment && !string.IsNullOrEmpty(Cust.Comment))
+                //    {
+                //        AddCustomerCommentsHistory(Cust.ID, UserID, Cust.Comment);
+                //    }
 
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(Cust.Comment))
-                    {
-                        AddCustomerCommentsHistory(Cust.ID, UserID, Cust.Comment);
-                    }
-                }
+                //}
+                //else
+                //{
+                //    if (!string.IsNullOrEmpty(Cust.Comment))
+                //    {
+                //        AddCustomerCommentsHistory(Cust.ID, UserID, Cust.Comment);
+                //    }
+                //}
                 resposeObj.CustomerId = Cust.ID;
                 resposeObj.status = "successfully";
                 ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
@@ -120,17 +120,37 @@ namespace LoyalFriends.Controllers
             {
                 var Customer = CustomerService.GetCustomerById(CustomerID);
                 var CustVM = CustomerMapping(Customer);
-                var HistoryLst = CustomerCommentsHistoryService.SearchFor(a => a.CustomerID == CustomerID).ToList();
-                List<CustomerHistoryviewModel> CustomerHistoryviewModelLst = new List<CustomerHistoryviewModel>();
-                if (HistoryLst.Count > 0)
+                var CommentsHistoryLst = CustomerCommentsHistoryService.SearchFor(a => a.CustomerID == CustomerID && a.Comment != null && a.Comment != string.Empty).ToList();
+                List<CustomerCommentsHistoryviewModel> CustomerCommentsHistoryviewModelLst = new List<CustomerCommentsHistoryviewModel>();
+                if (CommentsHistoryLst.Count > 0)
                 {
-                    HistoryLst.ForEach(a =>
+                    CommentsHistoryLst.ForEach(a =>
                     {
-                        CustomerHistoryviewModelLst.Add(CustomerCommentsHistoryMapping(a));
+                        CustomerCommentsHistoryviewModelLst.Add(CustomerCommentsHistoryMapping(a));
+                    });
+                }
+                var StatusHistoryLst = CustomerStatusHistoryService.SearchFor(a => a.CustomerID == CustomerID && a.CustomerStatusID != null).ToList();
+                List<CustomerStatusHistoryviewModel> CustomerStatusHistoryviewModelLst = new List<CustomerStatusHistoryviewModel>();
+                if (StatusHistoryLst.Count > 0)
+                {
+                    StatusHistoryLst.ForEach(a =>
+                    {
+                        CustomerStatusHistoryviewModelLst.Add(CustomerStatusHistoryMapping(a));
+                    });
+                }
+                var RejectedReasonHistoryLst = CustomerRejectedReasonHistoryService.SearchFor(a => a.CustomerID == CustomerID && a.RejectedReason != null && a.RejectedReason != string.Empty).ToList();
+                List<CustomerRejectedReasonHistoryviewModel> CustomerRejectedReasonHistoryviewModelLst = new List<CustomerRejectedReasonHistoryviewModel>();
+                if (RejectedReasonHistoryLst.Count > 0)
+                {
+                    RejectedReasonHistoryLst.ForEach(a =>
+                    {
+                        CustomerRejectedReasonHistoryviewModelLst.Add(CustomerRejectedReasonHistoryMapping(a));
                     });
                 }
                 resposeObj.Customer = CustVM;
-                resposeObj.History = CustomerHistoryviewModelLst;
+                resposeObj.CommentsHistory = CustomerCommentsHistoryviewModelLst;
+                resposeObj.StatusHistory = CustomerStatusHistoryviewModelLst;
+                resposeObj.RejectedReasonHistory = CustomerRejectedReasonHistoryviewModelLst;
                 resposeObj.status = "successfully";
                 ResponseMessage = request.CreateResponse(HttpStatusCode.OK, resposeObj);
 
@@ -169,32 +189,53 @@ namespace LoyalFriends.Controllers
                 ServiceProviderID = customerVM.ServiceProviderID,
                 ServiceQuotaID = customerVM.ServiceQuotaID,
                 SpecialMark = customerVM.SpecialMark,
-                RequestNumber = customerVM.RequestNumber
+                RequestNumber = customerVM.RequestNumber,
+                RejectedReason=customerVM.RejectedReason
             };
             return Cust;
         }
 
-        public bool AddCustomerCommentsHistory(int CustomerID, int UserID, string Comment)
-        {
-            CustomerCommentsHistory CCH = new CustomerCommentsHistory
-            {
-                CustomerID = CustomerID,
-                Comment = Comment,
-                CreatedBy = UserID,
-                CreatedOn = DateTime.Now
-            };
-            return CustomerCommentsHistoryService.AddCustomerCommentsHistory(CCH);
-        }
+        //public bool AddCustomerCommentsHistory(int CustomerID, int UserID, string Comment)
+        //{
+        //    CustomerCommentsHistory CCH = new CustomerCommentsHistory
+        //    {
+        //        CustomerID = CustomerID,
+        //        Comment = Comment,
+        //        CreatedBy = UserID,
+        //        CreatedOn = DateTime.Now
+        //    };
+        //    return CustomerCommentsHistoryService.AddCustomerCommentsHistory(CCH);
+        //}
 
-        public CustomerHistoryviewModel CustomerCommentsHistoryMapping(CustomerCommentsHistory History)
+        public CustomerCommentsHistoryviewModel CustomerCommentsHistoryMapping(CustomerCommentsHistory CommentsHistory)
         {
-            var HVM = new CustomerHistoryviewModel
+            var HCVM = new CustomerCommentsHistoryviewModel
             {
-                Comment = History.Comment,
-                CreatedBy = UserService.GetUserName(History.CreatedBy),
-                CreatedOn = History.CreatedOn.ToStrDateTime()
+                Comment = CommentsHistory.Comment,
+                CreatedBy = UserService.GetUserName(CommentsHistory.ActionBy),
+                CreatedOn = CommentsHistory.ActionOn.ToStrDateTime()
             };
-            return HVM;
+            return HCVM;
+        }
+        public CustomerStatusHistoryviewModel CustomerStatusHistoryMapping(CustomerStatusHistory StatusHistory)
+        {
+            var HSVM = new CustomerStatusHistoryviewModel
+            {
+                Status = LookupService.GetLookupName(StatusHistory.CustomerStatusID),
+                CreatedBy = UserService.GetUserName(StatusHistory.ActionBy),
+                CreatedOn = StatusHistory.ActionOn.ToStrDateTime()
+            };
+            return HSVM;
+        }
+        public CustomerRejectedReasonHistoryviewModel CustomerRejectedReasonHistoryMapping(CustomerRejectedReasonHistory RejectedReasonHistory)
+        {
+            var HRVM = new CustomerRejectedReasonHistoryviewModel
+            {
+                RejectedReason = RejectedReasonHistory.RejectedReason,
+                CreatedBy = UserService.GetUserName(RejectedReasonHistory.ActionBy),
+                CreatedOn = RejectedReasonHistory.ActionOn.ToStrDateTime()
+            };
+            return HRVM;
         }
 
         [HttpGet]
@@ -440,7 +481,8 @@ namespace LoyalFriends.Controllers
                 ServiceQuota = LookupService.GetLookupName(C.ServiceQuotaID),
                 ServiceQuotaID = C.ServiceQuotaID,
                 SpecialMark = C.SpecialMark,
-                RequestNumber = C.RequestNumber
+                RequestNumber = C.RequestNumber,
+                RejectedReason=C.RejectedReason
 
             };
             return CVM;

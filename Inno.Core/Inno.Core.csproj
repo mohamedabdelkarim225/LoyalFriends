@@ -42,9 +42,13 @@
   <ItemGroup>
     <Compile Include="BaseEntity.cs" />
     <Compile Include="Data\Corporate.cs" />
+    <Compile Include="Data\CorporateRejectedReasonHistory.cs" />
+    <Compile Include="Data\CorporateStatusHistory.cs" />
     <Compile Include="Data\Customer.cs" />
     <Compile Include="Data\CorporateCommentsHistory.cs" />
     <Compile Include="Data\CustomerCommentsHistory.cs" />
+    <Compile Include="Data\CustomerRejectedReasonHistory.cs" />
+    <Compile Include="Data\CustomerStatusHistory.cs" />
     <Compile Include="Data\Lookup.cs" />
     <Compile Include="Data\LookupCategory.cs" />
     <Compile Include="Data\User.cs" />

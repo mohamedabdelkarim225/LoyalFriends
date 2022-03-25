@@ -23,10 +23,12 @@ namespace DBGeneration.Models
         public Nullable<int> ServiceProviderID { get; set; }
         public Nullable<int> ServiceQuotaID { get; set; }
         public Nullable<int> CustomerStatusID { get; set; }
+        public Nullable<int> RequestTypeID { get; set; }
         public Nullable<int> RouterTypeID { get; set; }
         public Nullable<int> RouterDeliveryMethodID { get; set; }
         public Nullable<int> CustomerTypeID { get; set; }
         public string Comment { get; set; }
+        public string RejectedReason { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<int> ModifiedBy { get; set; }

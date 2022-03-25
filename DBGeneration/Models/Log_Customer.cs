@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 
-namespace Inno.Core.Data
+namespace DBGeneration.Models
 {
-    public partial class Customer:BaseEntity
+    public partial class Log_Customer
     {
         public int ID { get; set; }
+        public Nullable<int> CustomerID { get; set; }
         public string RequestNumber { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
@@ -29,10 +30,8 @@ namespace Inno.Core.Data
         public Nullable<int> CustomerTypeID { get; set; }
         public string Comment { get; set; }
         public string RejectedReason { get; set; }
-        public Nullable<int> CreatedBy { get; set; }
-        public Nullable<System.DateTime> CreatedOn { get; set; }
-        public Nullable<int> ModifiedBy { get; set; }
-        public Nullable<System.DateTime> ModifiedOn { get; set; }
+        public string Action { get; set; }
+        public Nullable<int> ActionBy { get; set; }
+        public Nullable<System.DateTime> ActionDate { get; set; }
     }
-
 }

@@ -18,6 +18,10 @@ namespace DBGeneration.Models.Mapping
             this.Property(t => t.ParentID).HasColumnName("ParentID");
             this.Property(t => t.LookupCategoryID).HasColumnName("LookupCategoryID");
             this.Property(t => t.IsActive).HasColumnName("IsActive");
+            this.Property(t => t.CreatedBy).HasColumnName("CreatedBy");
+            this.Property(t => t.CreatedOn).HasColumnName("CreatedOn");
+            this.Property(t => t.ModifiedBy).HasColumnName("ModifiedBy");
+            this.Property(t => t.ModifiedOn).HasColumnName("ModifiedOn");
         }
     }
 }

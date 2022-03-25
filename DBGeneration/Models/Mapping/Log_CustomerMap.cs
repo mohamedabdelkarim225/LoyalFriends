@@ -3,9 +3,9 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace DBGeneration.Models.Mapping
 {
-    public class CustomerMap : EntityTypeConfiguration<Customer>
+    public class Log_CustomerMap : EntityTypeConfiguration<Log_Customer>
     {
-        public CustomerMap()
+        public Log_CustomerMap()
         {
             // Primary Key
             this.HasKey(t => t.ID);
@@ -24,8 +24,9 @@ namespace DBGeneration.Models.Mapping
                 .HasMaxLength(50);
 
             // Table & Column Mappings
-            this.ToTable("Customer");
+            this.ToTable("Log_Customer");
             this.Property(t => t.ID).HasColumnName("ID");
+            this.Property(t => t.CustomerID).HasColumnName("CustomerID");
             this.Property(t => t.RequestNumber).HasColumnName("RequestNumber");
             this.Property(t => t.Name).HasColumnName("Name");
             this.Property(t => t.Address).HasColumnName("Address");
@@ -49,10 +50,9 @@ namespace DBGeneration.Models.Mapping
             this.Property(t => t.CustomerTypeID).HasColumnName("CustomerTypeID");
             this.Property(t => t.Comment).HasColumnName("Comment");
             this.Property(t => t.RejectedReason).HasColumnName("RejectedReason");
-            this.Property(t => t.CreatedBy).HasColumnName("CreatedBy");
-            this.Property(t => t.CreatedOn).HasColumnName("CreatedOn");
-            this.Property(t => t.ModifiedBy).HasColumnName("ModifiedBy");
-            this.Property(t => t.ModifiedOn).HasColumnName("ModifiedOn");
+            this.Property(t => t.Action).HasColumnName("Action");
+            this.Property(t => t.ActionBy).HasColumnName("ActionBy");
+            this.Property(t => t.ActionDate).HasColumnName("ActionDate");
         }
     }
 }
