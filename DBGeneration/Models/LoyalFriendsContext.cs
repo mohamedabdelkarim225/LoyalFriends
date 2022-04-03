@@ -21,11 +21,8 @@ namespace DBGeneration.Models
         public DbSet<CorporateRejectedReasonHistory> CorporateRejectedReasonHistories { get; set; }
         public DbSet<CorporateStatusHistory> CorporateStatusHistories { get; set; }
         public DbSet<Customer> Customers { get; set; }
-        public DbSet<CustomerCommentsHistory> CustomerCommentsHistories { get; set; }
         public DbSet<CustomerRejectedReasonHistory> CustomerRejectedReasonHistories { get; set; }
         public DbSet<CustomerStatusHistory> CustomerStatusHistories { get; set; }
-        public DbSet<Log_Corporate> Log_Corporate { get; set; }
-        public DbSet<Log_Customer> Log_Customer { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<LookupCategory> LookupCategories { get; set; }
         public DbSet<Lookup> Lookups { get; set; }
@@ -37,11 +34,8 @@ namespace DBGeneration.Models
             modelBuilder.Configurations.Add(new CorporateRejectedReasonHistoryMap());
             modelBuilder.Configurations.Add(new CorporateStatusHistoryMap());
             modelBuilder.Configurations.Add(new CustomerMap());
-            modelBuilder.Configurations.Add(new CustomerCommentsHistoryMap());
             modelBuilder.Configurations.Add(new CustomerRejectedReasonHistoryMap());
             modelBuilder.Configurations.Add(new CustomerStatusHistoryMap());
-            modelBuilder.Configurations.Add(new Log_CorporateMap());
-            modelBuilder.Configurations.Add(new Log_CustomerMap());
             modelBuilder.Configurations.Add(new UserMap());
             modelBuilder.Configurations.Add(new LookupCategoryMap());
             modelBuilder.Configurations.Add(new LookupMap());

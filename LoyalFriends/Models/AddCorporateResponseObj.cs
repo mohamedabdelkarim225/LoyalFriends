@@ -7,7 +7,7 @@ namespace LoyalFriends.Models
 {
     public class AddCorporateResponseObj
     {
-        public int CorporateId { get; set; }
+        public long CorporateId { get; set; }
         public string status { get; set; }
         public string error { get; set; }
     }

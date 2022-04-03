@@ -5,8 +5,8 @@ namespace DBGeneration.Models
 {
     public partial class CorporateStatusHistory
     {
-        public int ID { get; set; }
-        public Nullable<int> CorporateID { get; set; }
+        public long ID { get; set; }
+        public Nullable<long> CorporateID { get; set; }
         public Nullable<int> CustomerStatusID { get; set; }
         public string Action { get; set; }
         public Nullable<int> ActionBy { get; set; }

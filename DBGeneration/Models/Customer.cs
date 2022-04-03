@@ -5,7 +5,7 @@ namespace DBGeneration.Models
 {
     public partial class Customer
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
         public string RequestNumber { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
